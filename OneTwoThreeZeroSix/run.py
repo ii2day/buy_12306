@@ -285,7 +285,7 @@ class OneTwoThreeZeroSix():
             msg["To"] = formataddr(['xixixi', self.my_user])  # 邮件接收方名称
 
             s = smtplib.SMTP("smtp.qq.com", 25)  # 邮箱的传输协议，端口默认25
-            s.login(self.my_sender, 'fyebwvkwlqbybiif')  # 登录邮箱，这里的第二个参数为qq邮箱授权码，不要填你的登录密码
+            s.login(self.my_sender, 'xxxxxxxxx')  # 登录邮箱，这里的第二个参数为qq邮箱授权码，不要填你的登录密码
             s.sendmail(self.my_sender, [self.my_user, ], msg.as_string())  # 发送方，接收方，发送消息
             s.quit()  # 退出邮箱
             print("抢票通知邮件发送成功！")
