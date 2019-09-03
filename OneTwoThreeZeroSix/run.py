@@ -42,6 +42,18 @@ class OneTwoThreeZeroSix():
 
     def captcha(self):
         #获取验证码
+
+        init_url = 'https://kyfw.12306.cn/otn/login/init'
+        init_url_req = self.session.get(init_url,headers = self.headers)
+        html = self.session.get('https://kyfw.12306.cn/otn/HttpZF/GetJS', headers=self.headers).text
+        algID = re.search(r'algID\\x3d(.*?)\\x', html).group(1)
+        url_rail_deviceid = 'https://kyfw.12306.cn/otn/HttpZF/logdevice?algID={}&hashCode=r7Q312HDX1DWdoxyFkEg3YgNNCEkdkn3woDEBQ46p6k&FMQw=0&q4f3=zh-CN&VPIf=1&custID=133&VEek=1&dzuS=27.0%20d0&yD16=0&EOQP=13c246fe6c83ce181f4fd5e79c60a4ff&lEnu=3232235526&jp76=b34839808806e7ff02df813671ec99b3&hAqN=Win32&platform=WEB&ks0Q=a103db222cd8296a50268c8f0355b741&TeRS=1040x1920&tOHY=24xx1080x1920&Fvje=i1l1s1&q5aJ=-8&wNLf=99115dfb07133750ba677d055874de87&0aew=Mozilla/5.0%20(Windows%20NT%2010.0;%20WOW64;%20rv:68.0)%20Gecko/20100101%20Firefox/68.0&E3gR=1aca4c340c7adfbb215c70ce1f0e7ebf&timestamp='.format(
+            algID)
+        html_rail_deviceid = self.session.get(url_rail_deviceid + str(int(time.time() * 1000)), headers=self.headers).text
+        rail_deviceid = re.search(r'"dfp":"(.*?)"', html_rail_deviceid).group(1)
+        rail_deviceid_exp = re.search(r'"exp":"(.*?)"', html_rail_deviceid).group(1)
+        self.session.cookies['RAIL_DEVICEID'] = rail_deviceid
+        self.session.cookies['RAIL_EXPIRATION'] = rail_deviceid_exp
         captcha_url = 'https://kyfw.12306.cn/passport/captcha/captcha-image?login_site=E&module=login&rand=sjrand&0.9250735987164926'
         captcha_url_img = self.session.get(captcha_url,headers= self.headers).content
         with open('captcha.png','wb') as ca:
@@ -101,9 +113,6 @@ class OneTwoThreeZeroSix():
             'password': self.password,
             'appid': 'otn',
         }
-        self.session.cookies['RAIL_DEVICEID'] = 'YAE3tFrNlYhEj74DUpKQowt_8bNWYcirxto6Cn-4TY4MJ_Xguc4iY2T4MeP2eA9vwRq8Dg62r4Jlm9I9qAcLhgcyWDKhOQNPVVE_5ISJiBuwdsZt2a3Bschq_opSRKxp6rCe2UVGvFYGK3KtpO1AbX8DHAmxtJdq'
-        self.session.cookies['RAIL_EXPIRATION'] = '1567592385602'
-        self.session.cookies['route'] = '495c805987d0f5c8c84b14f60212447d'
         login_req = self.session.post(login_url, headers=self.headers, data=data_url1).text
         login_req_result = json.loads(login_req)
         print(login_req_result['result_message'])
@@ -307,7 +316,6 @@ if __name__ == "__main__":
     train_set=input(' 请输入座次：')
     my_sender = input(' 请输入发件人邮箱账号：')  # 发件人邮箱账号
     my_user = input(' 请输入收件人邮箱账号：')  # 收件人邮箱账号
-
 
     onetwothreezoresix = OneTwoThreeZeroSix(username,password,my_sender,my_user)
     onetwothreezoresix.captcha()
