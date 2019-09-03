@@ -101,9 +101,9 @@ class OneTwoThreeZeroSix():
             'password': self.password,
             'appid': 'otn',
         }
-        self.session.cookies['RAIL_DEVICEID'] = 'XQ0xiH-VnSGYwebVyByxBEU1yJqsStE6f1Khg9ZD6tMgYBV-vaqYc4QDHqaHtiv0-WjiiD2VmmElfDOLIzrAXSTpmx_ggRwmtCDd3az9erjsnV2k2Y73l63q_zyVoIPBbQG_4gTnAoK8fQVKgkExML_wg04ayGxQ'
-        self.session.cookies['RAIL_EXPIRATION'] = '1565922992430'
-        self.session.cookies['route'] = 'c5c62a339e7744272a54643b3be5bf64'
+        self.session.cookies['RAIL_DEVICEID'] = 'YAE3tFrNlYhEj74DUpKQowt_8bNWYcirxto6Cn-4TY4MJ_Xguc4iY2T4MeP2eA9vwRq8Dg62r4Jlm9I9qAcLhgcyWDKhOQNPVVE_5ISJiBuwdsZt2a3Bschq_opSRKxp6rCe2UVGvFYGK3KtpO1AbX8DHAmxtJdq'
+        self.session.cookies['RAIL_EXPIRATION'] = '1567592385602'
+        self.session.cookies['route'] = '495c805987d0f5c8c84b14f60212447d'
         login_req = self.session.post(login_url, headers=self.headers, data=data_url1).text
         login_req_result = json.loads(login_req)
         print(login_req_result['result_message'])
@@ -139,9 +139,7 @@ class OneTwoThreeZeroSix():
         self.ticketer_phone = user_info['ticketer_phone']
         self.train_set = user_info['train_set']
 
-
-
-        cheak_ticket_url = 'https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date='+self.train_data+'&leftTicketDTO.from_station='+self.from_station+'&leftTicketDTO.to_station='+self.to_station+'&purpose_codes=ADULT'
+        cheak_ticket_url = 'https://kyfw.12306.cn/otn/leftTicket/queryT?leftTicketDTO.train_date='+self.train_data+'&leftTicketDTO.from_station='+self.from_station+'&leftTicketDTO.to_station='+self.to_station+'&purpose_codes=ADULT'
         cheak_req = self.session.get(cheak_ticket_url,headers=self.headers).text
         cheak_req_json = json.loads(cheak_req)
         for i in cheak_req_json['data']['result']:
@@ -309,6 +307,8 @@ if __name__ == "__main__":
     train_set=input(' 请输入座次：')
     my_sender = input(' 请输入发件人邮箱账号：')  # 发件人邮箱账号
     my_user = input(' 请输入收件人邮箱账号：')  # 收件人邮箱账号
+
+
     onetwothreezoresix = OneTwoThreeZeroSix(username,password,my_sender,my_user)
     onetwothreezoresix.captcha()
     onetwothreezoresix.login()
@@ -325,5 +325,6 @@ if __name__ == "__main__":
         'train_set':train_set
     }
     onetwothreezoresix.cheak_ticket(user_info)
+
 
 
